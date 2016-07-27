@@ -1,6 +1,8 @@
 from selenium import webdriver
 import unittest
 
+from selenium.webdriver.common.keys import Keys
+
 
 class NewVisitorTest(unittest.TestCase):
     def setUp(self):
@@ -15,7 +17,21 @@ class NewVisitorTest(unittest.TestCase):
 
         self.assertIn('To-Do', self.browser.title)
 
-        self.fail('Finish the Test!')
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('To-Do', header_text)
+
+        input_box = self.browser.find_element_by_id('id_new_item')
+        self.assertEqual(input_box.get_attribute('placeholder'), 'Enter a to-do item')
+
+        input_box.send_keys('Buy peacock feathers')
+        input_box.send_keys(Keys.Enter)
+
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = self.browser.find_elements_by_tag_name('tr')
+        self.assertTrue(any(row.text == '1: Buy peacock feathers' for row in rows))
+
+        self.fail('Finish')
+
 
 if __name__ == '__main__':
     unittest.main()
