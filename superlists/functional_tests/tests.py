@@ -1,12 +1,11 @@
-import unittest
-
+from django.test import LiveServerTestCase
 import time
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
                                         desired_capabilities=DesiredCapabilities.CHROME)
@@ -21,7 +20,7 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn(row_text, [row.text for row in rows])
 
     def test_can_start_a_list_and_retrieve_it_later(self):
-        self.browser.get('http://127.0.0.1:8000')
+        self.browser.get(self.live_server_url)
 
         self.assertIn('To-Do', self.browser.title)
 
@@ -48,6 +47,3 @@ class NewVisitorTest(unittest.TestCase):
 
         self.fail('Finish')
 
-
-if __name__ == '__main__':
-    unittest.main()
