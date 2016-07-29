@@ -34,6 +34,9 @@ class NewVisitorTest(LiveServerTestCase):
         input_box.send_keys(text1)
         input_box.send_keys(Keys.ENTER)
 
+        edith_list_url = self.browser.current_url
+        self.assertRegex(edith_list_url, r'/lists/.+')
+
         self.check_for_row_in_list_table('1: ' + text1)
 
         input_box = self.browser.find_element_by_id('id_new_item')
@@ -45,5 +48,23 @@ class NewVisitorTest(LiveServerTestCase):
 
         self.check_for_row_in_list_table('2: ' + text2)
 
-        self.fail('Finish')
+        self.browser.quit()
+        self.browser = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
+                                        desired_capabilities=DesiredCapabilities.CHROME)
 
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn(text1, page_text)
+        self.assertNotIn('make a fly', page_text)
+
+        input_box = self.browser.find_element_by_id('id_new_item')
+        text3 = 'Buy milk'
+        input_box.send_keys(text3)
+        input_box.send_keys(Keys.ENTER)
+
+        francis_list_url = self.browser.current_url
+        self.assertRegex(francis_list_url, r'/lists/.+')
+        self.assertNotEqual(francis_list_url, edith_list_url)
+        page_text = self.browser.find_element_by_tag_name('body')
+        self.assertNotIn(text1, page_text)
+        self.assertIn(text3, page_text)
