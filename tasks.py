@@ -43,3 +43,7 @@ def makemigrations(ctx):
 def stopseleniumindocker(ctx):
     ctx.run("docker kill selenium &", warn=True)
     ctx.run("docker rm selenium", warn=True)
+
+@task
+def collectstatic(ctx):
+    ctx.run("python superlists/manage.py collectstatic")
