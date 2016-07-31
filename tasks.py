@@ -3,7 +3,7 @@ from threading import Thread
 
 
 @task
-def run(ctx, firefox=False):
+def runseleniumindocker(ctx, firefox=False):
     browser = "chrome"
     if firefox:
         browser = "firefox"
@@ -40,6 +40,6 @@ def makemigrations(ctx):
 
 
 @task
-def stop(ctx):
-    ctx.run("docker kill selenium")
-    ctx.run("docker rm selenium")
+def stopseleniumindocker(ctx):
+    ctx.run("docker kill selenium &", warn=True)
+    ctx.run("docker rm selenium", warn=True)
