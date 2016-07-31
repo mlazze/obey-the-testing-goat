@@ -1,11 +1,10 @@
-from django.test import LiveServerTestCase
-import time
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
                                         desired_capabilities=DesiredCapabilities.CHROME)
@@ -71,9 +70,10 @@ class NewVisitorTest(LiveServerTestCase):
 
     def test_layout_and_styling(self):
         self.browser.get(self.live_server_url)
-        self.browser.set_window_size(1024,768)
+        self.browser.set_window_size(1024, 768)
         inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertAlmostEqual(inputbox.location["x"] + inputbox.size['width'] / 2, 512, delta=10)
         inputbox.send_keys('testing\n')
         self.browser.find_element_by_id('id_new_item')
+        inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertAlmostEqual(inputbox.location["x"] + inputbox.size['width'] / 2, 512, delta=10)
