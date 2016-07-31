@@ -47,3 +47,7 @@ def stopseleniumindocker(ctx):
 @task
 def collectstatic(ctx):
     ctx.run("python superlists/manage.py collectstatic")
+
+@task
+def rungunicorn(ctx):
+    ctx.run("cd source && ../virtualenv/bin/gunicorn --bind unix:/tmp/superlists-staging.skij.mooo.com.socket superlists.wsgi:application")
