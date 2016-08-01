@@ -8,6 +8,6 @@ class LayoutAndStylingTest(FunctionalTest):
         inputbox = self.get_item_input_box()
         self.assertAlmostEqual(inputbox.location["x"] + inputbox.size['width'] / 2, 512, delta=10)
         inputbox.send_keys('testing\n')
-        self.browser.find_element_by_id('id_new_item')
+        self.get_item_input_box()
         inputbox = self.get_item_input_box()
         self.assertAlmostEqual(inputbox.location["x"] + inputbox.size['width'] / 2, 512, delta=10)
