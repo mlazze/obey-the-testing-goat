@@ -20,34 +20,6 @@ class HomePageTest(TestCase):
         self.assertEqual(response.content.decode(), expected_html)
 
 
-class ListAndItemModelTest(TestCase):
-    def test_saving_and_retrieving_items(self):
-        list_ = List()
-        list_.save()
-        first_item = Item()
-        text1 = 'The first (ever) list item'
-        first_item.text = text1
-        first_item.list = list_
-        first_item.save()
-        second_item = Item()
-        text2 = 'Item the second '
-        second_item.text = text2
-        second_item.list = list_
-        second_item.save()
-
-        saved_list = List.objects.first()
-        self.assertEqual(saved_list, list_)
-
-        saved_items = Item.objects.all()
-        self.assertEqual(saved_items.count(), 2)
-        first_saved_item = saved_items[0]
-        second_saved_item = saved_items[1]
-        self.assertEqual(first_saved_item.text, text1)
-        self.assertEqual(first_saved_item.list, list_)
-        self.assertEqual(second_saved_item.text, text2)
-        self.assertEqual(second_saved_item.list, list_)
-
-
 class ListViewTest(TestCase):
     def test_uses_list_template(self):
         list_ = List.objects.create()
@@ -72,7 +44,6 @@ class ListViewTest(TestCase):
         correct_list = List.objects.create()
         response = self.client.get('/lists/%d/' % correct_list.id)
         self.assertEqual(response.context['list'], correct_list)
-
 
 
 class NewListTest(TestCase):
@@ -101,5 +72,6 @@ class NewItemTest(TestCase):
     def test_redirects_to_list_view(self):
         other_list = List.objects.create()
         correct_list = List.objects.create()
-        response = self.client.post('/lists/%d/add_item' % correct_list.id, data={'item_text': 'A new item for an existing list'})
+        response = self.client.post('/lists/%d/add_item' % correct_list.id,
+                                    data={'item_text': 'A new item for an existing list'})
         self.assertRedirects(response, '/lists/%d/' % correct_list.id)
