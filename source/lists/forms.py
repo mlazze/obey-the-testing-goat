@@ -20,3 +20,8 @@ class ItemForm(forms.models.ModelForm):
                 'required': EMPTY_LIST_ERROR,
             }
         }
+
+    # noinspection PyMethodOverriding
+    def save(self, for_list):
+        self.instance.list = for_list
+        return super().save()
