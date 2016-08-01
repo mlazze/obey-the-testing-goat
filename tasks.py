@@ -17,7 +17,7 @@ def runseleniumindocker(ctx, firefox=False):
 @task
 def runserver(ctx):
     def server():
-        ctx.run("python superlists/manage.py runserver")
+        ctx.run("python source/manage.py runserver")
 
     threads = map(lambda x: Thread(target=x), (server,))
     # Kick off
@@ -31,12 +31,12 @@ def migrate(ctx, makeMigrations=False):
     if makeMigrations:
         makemigrations(ctx)
 
-    ctx.run("python superlists/manage.py migrate")
+    ctx.run("python source/manage.py migrate")
 
 
 @task
 def makemigrations(ctx):
-    ctx.run("python superlists/manage.py makemigrations")
+    ctx.run("python source/manage.py makemigrations")
 
 
 @task
@@ -46,7 +46,7 @@ def stopseleniumindocker(ctx):
 
 @task
 def collectstatic(ctx):
-    ctx.run("python superlists/manage.py collectstatic")
+    ctx.run("python source/manage.py collectstatic")
 
 @task
 def rungunicorn(ctx):
