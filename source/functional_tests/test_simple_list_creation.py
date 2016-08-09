@@ -37,7 +37,7 @@ class NewVisitorTest(FunctionalTest):
 
         self.browser.quit()
         self.browser = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
-                                        desired_capabilities=DesiredCapabilities.CHROME)
+                                        desired_capabilities=DesiredCapabilities.FIREFOX)
 
         self.browser.get(self.server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
