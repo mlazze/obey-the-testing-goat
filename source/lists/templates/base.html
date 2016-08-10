@@ -40,8 +40,14 @@
 <script src="{% static "lists/list.js" %}"></script>
 <script src="{% static "accounts/accounts.js" %}"></script>
 <script>
-    $(document).ready(function() {
-        Superlists.Accounts.initialize(navigator);
+    $(document).ready(function () {
+        var user = "{{ user.email }}";
+        var token = "{{ csrf_token }}";
+        var urls = {
+            login: "TODO",
+            logout: "TODO"
+        };
+        Superlists.Accounts.initialize(navigator, user, token, urls);
     });
 </script>
 </body>
