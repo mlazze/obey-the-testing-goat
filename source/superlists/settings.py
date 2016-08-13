@@ -25,7 +25,8 @@ SECRET_KEY = '64ptaz0xkk2y4j3qc496xg=gs)4%-)p7s(a5#zhe*s(c!4j@0e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+DOMAIN = 'localhost'
+ALLOWED_HOSTS = [DOMAIN]
 
 # Application definition
 
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'lists',
     'accounts',
+    'functional_tests',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -135,6 +137,12 @@ LOGGING = {
     },
     'loggers': {
         'django': {
+            'handlers': ['console'],
+        },
+        'accounts': {
+            'handlers': ['console'],
+        },
+        'lists': {
             'handlers': ['console'],
         },
     },
