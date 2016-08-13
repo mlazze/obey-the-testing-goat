@@ -5,3 +5,4 @@ __pycache__
 /static/
 /database/
 /virtualenv/
+/source/functional_tests/screendumps/
