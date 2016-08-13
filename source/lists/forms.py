@@ -23,27 +23,19 @@ class ItemForm(forms.models.ModelForm):
             }
         }
 
-    # noinspection PyMethodOverriding
-    def save(self, for_list):
-        self.instance.list = for_list
-        return super().save()
-
 
 class NewListForm(ItemForm):
     def save(self, owner):
         if owner.is_authenticated():
-            List.create_new(first_item_text=self.cleaned_data['text'], owner=owner)
+            return List.create_new(first_item_text=self.cleaned_data['text'], owner=owner)
         else:
-            List.create_new(first_item_text=self.cleaned_data['text'])
+            return List.create_new(first_item_text=self.cleaned_data['text'])
 
 
 class ExistingListItemForm(ItemForm):
     def __init__(self, for_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.instance.list = for_list
-
-    def save(self):
-        return forms.models.ModelForm.save(self)
 
     def validate_unique(self):
         try:
