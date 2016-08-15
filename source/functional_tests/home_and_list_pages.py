@@ -21,8 +21,8 @@ class HomePage(object):
         list_page.wait_for_new_item_in_list(item_text, 1)
         return list_page
 
-    def goto_my_lists_page(self):
-        self.test.browser.find_element_by_id('My lists').click()
+    def go_to_my_lists_page(self):
+        self.test.browser.find_element_by_link_text('My lists').click()
         self.test.wait_for(
             lambda: self.test.assertEqual(self.test.browser.find_element_by_tag_name('h1').text, 'My Lists'))
 
@@ -42,7 +42,7 @@ class ListPage(object):
         return self.test.browser.find_element_by_css_selector('input[name=email]')
 
     def get_shared_with_list(self):
-        return self.test.find_elements_by_css_selector('.list-sharee')
+        return self.test.browser.find_elements_by_css_selector('.list-sharee')
 
     def share_list_with(self, email):
         self.get_share_box().send_keys(email + '\n')
