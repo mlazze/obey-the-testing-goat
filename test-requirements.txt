@@ -1,0 +1,5 @@
+Django==1.8
+gunicorn==19.6.0
+requests
+selenium
+pytest-django

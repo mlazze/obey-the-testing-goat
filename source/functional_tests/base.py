@@ -1,12 +1,17 @@
 import os
 import sys
-from datetime import datetime, time
+from datetime import datetime
+import time
 
+from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.wait import WebDriverWait
+
+from functional_tests.management.commands.create_session import create_pre_authenticated_session
+from functional_tests.server_tools import create_session_on_server
 
 from .server_tools import reset_database
 
@@ -15,6 +20,8 @@ DEFAULT_WAIT = 5
 
 
 class FunctionalTest(StaticLiveServerTestCase):
+    against_staging = None
+
     @classmethod
     def setUpClass(cls):
         for arg in sys.argv:
@@ -116,3 +123,17 @@ class FunctionalTest(StaticLiveServerTestCase):
             except (AssertionError, WebDriverException):
                 time.sleep(0.1)
         return function_with_assertion()
+
+    def create_pre_authenticated_session(self, email):
+        if self.against_staging:
+            session_key = create_session_on_server(self.server_host, email)
+        else:
+            session_key = create_pre_authenticated_session(email)
+
+        self.browser.get(str(self.server_url) + "/404_no_such_url")
+
+        self.browser.add_cookie(dict(
+            name=settings.SESSION_COOKIE_NAME,
+            value=session_key,
+            path='/',
+        ))
